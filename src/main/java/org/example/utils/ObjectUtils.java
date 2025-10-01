@@ -1,7 +1,8 @@
 package org.example.utils;
 
+import org.example.model.Method;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+
 
 public class ObjectUtils {
 

@@ -1,12 +1,8 @@
 package org.example.verifiers;
 
-import org.example.ConventionScope;
-import org.example.utils.ConventionAnnotation;
-import org.example.utils.Rule;
+import org.example.model.Rule;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 
 public interface ConventionVerifier {

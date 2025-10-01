@@ -10,48 +10,12 @@
           "name": "suffix",
           "searchOnEnclosingElement": "true",
           "parameters": [
-            { "name": "suffix", "value": "get" }
+            { "name": "suffix", "value": "set" }
           ]
         }],
       "annotation": {
         "name": "org.example.annotations.forMethod",
         "parameters": []
       }
-   },
-    {
-      "name": "PrefixConvention",
-      "conventionScope": "method",
-      "implementation": "org.example.verifiers.PrefixConventionVerifier",
-      "allRulesMustApply": "false",
-      "rules": [
-        {
-          "name": "prefix",
-          "searchOnEnclosingElement": "false",
-          "parameters": [
-            { "name": "prefix", "value": "set" }
-          ]
-        }],
-      "annotation": {
-        "name": "org.example.annotations.AnnotationWithoutParameters",
-        "parameters": []
-      }
-    },
-    {
-      "name": "PrefixConvention",
-      "conventionScope": "field",
-      "implementation": "org.example.verifiers.PrefixConventionVerifier",
-      "allRulesMustApply": "false",
-      "rules": [
-        {
-          "name": "prefix",
-          "searchOnEnclosingElement": "false",
-          "parameters": [
-            { "name": "prefix", "value": "prefix" }
-          ]
-        }],
-      "annotation": {
-        "name": "org.example.annotations.forFields",
-        "parameters": []
-      }
-    }]
+   }]
 }

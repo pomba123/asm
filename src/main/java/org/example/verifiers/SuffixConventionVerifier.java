@@ -1,12 +1,9 @@
 package org.example.verifiers;
 
 import org.example.utils.ObjectUtils;
-import org.example.utils.Parameter;
-import org.example.utils.Rule;
+import org.example.model.Rule;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 
 public class SuffixConventionVerifier implements ConventionVerifier{

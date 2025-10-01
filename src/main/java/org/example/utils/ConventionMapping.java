@@ -1,5 +1,7 @@
 package org.example.utils;
 
+import org.example.model.Convention;
+
 import java.util.List;
 
 public class ConventionMapping {
