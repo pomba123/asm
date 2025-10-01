@@ -79,7 +79,8 @@ public class Method {
 
 
     private Class<?> getClassFor(Type type) throws ClassNotFoundException {
-
+        String className = type.getClassName().replace("/",".");
+        System.out.println(className+" works");
         switch (type.getSort()) {
             case Type.VOID:    return void.class;
             case Type.BOOLEAN: return boolean.class;
@@ -92,7 +93,7 @@ public class Method {
             case Type.DOUBLE:  return double.class;
             case Type.ARRAY:
             case Type.OBJECT:
-                return Class.forName(type.getClassName());
+                return Class.forName(className);
             default:
                 throw new IllegalArgumentException("Unknown type: " + type);
         }
