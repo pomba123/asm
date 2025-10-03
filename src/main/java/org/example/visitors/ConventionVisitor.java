@@ -12,27 +12,29 @@ import static org.objectweb.asm.Opcodes.ASM9;
 
 public class ConventionVisitor extends ClassVisitor {
 
-    private Convention convention;
-    private Class visitedClass;
+    private final Convention convention;
+    private final Class<?> visitedClass;
+    private final ClassLoader userClassLoader;
 
-    public ConventionVisitor(ClassVisitor classVisitor,Convention convention,Class clazz) {
+    public ConventionVisitor(ClassVisitor classVisitor, Convention convention, Class<?> clazz, ClassLoader userClassLoader) {
         super(ASM9, classVisitor);
         this.convention = convention;
         this.visitedClass = clazz;
+        this.userClassLoader = userClassLoader;
     }
 
-
-
     @Override
-    public void visitEnd(){
+    public void visitEnd() {
         boolean insert = false;
 
-        if(convention.getConventionScope() == ConventionScope.CLASS){
+        if (convention.getConventionScope() == ConventionScope.CLASS) {
             try {
-                ConventionVerifier verifier = (ConventionVerifier) Class.forName(convention.getImplementation()).getDeclaredConstructor().newInstance();;
-                insert = verifier.verifyConvention(visitedClass,convention.getRules());
+                Class<?> verifierClass = userClassLoader.loadClass(convention.getImplementation());
+                ConventionVerifier verifier =
+                        (ConventionVerifier) verifierClass.getDeclaredConstructor().newInstance();
+                insert = verifier.verifyConvention(visitedClass, convention.getRules());
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Failed to load verifier " + convention.getImplementation(), e);
             }
         }
         if (insert) {
@@ -46,23 +48,19 @@ public class ConventionVisitor extends ClassVisitor {
     public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
         FieldVisitor fv = super.visitField(access, name, descriptor, signature, value);
         boolean insert = false;
-        if(convention.getConventionScope() == ConventionScope.FIELD){
+        if (convention.getConventionScope() == ConventionScope.FIELD) {
             try {
                 Field field = visitedClass.getDeclaredField(name);
-                ConventionVerifier verifier = (ConventionVerifier) Class.forName(convention.getImplementation()).getDeclaredConstructor().newInstance();;
-                insert = verifier.verifyConvention(field,convention.getRules());
-
+                Class<?> verifierClass = userClassLoader.loadClass(convention.getImplementation());
+                ConventionVerifier verifier =
+                        (ConventionVerifier) verifierClass.getDeclaredConstructor().newInstance();
+                insert = verifier.verifyConvention(field, convention.getRules());
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException("Failed to verify field " + name, e);
             }
         }
         if (insert) {
             return new FieldVisitor(ASM9, fv) {
-                @Override
-                public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-                    return super.visitAnnotation(convention.getAnnotation().getName(), true);
-                }
-
                 @Override
                 public void visitEnd() {
                     AnnotationVisitor av = fv.visitAnnotation(convention.getAnnotation().getName(), true);
@@ -79,16 +77,15 @@ public class ConventionVisitor extends ClassVisitor {
         MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
         boolean insert = false;
 
-        if(convention.getConventionScope() == ConventionScope.METHOD){
+        if (convention.getConventionScope() == ConventionScope.METHOD) {
             try {
-                Method method = new Method(name,descriptor,exceptions,visitedClass.getClass());
-
-                ConventionVerifier verifier = (ConventionVerifier) Class.forName(convention.getImplementation()).getDeclaredConstructor().newInstance();;
-
-                insert = verifier.verifyConvention(method,convention.getRules());
-
+                Method method = new Method(name, descriptor, exceptions, visitedClass);
+                Class<?> verifierClass = userClassLoader.loadClass(convention.getImplementation());
+                ConventionVerifier verifier =
+                        (ConventionVerifier) verifierClass.getDeclaredConstructor().newInstance();
+                insert = verifier.verifyConvention(method, convention.getRules());
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new RuntimeException("Failed to verify method " + name, e);
             }
         }
         if (insert) {

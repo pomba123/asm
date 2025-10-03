@@ -7,8 +7,6 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
@@ -17,32 +15,34 @@ import java.util.List;
 
 public class ASMInsertExample {
 
-    public static void main(String[] args) throws Exception {
-        // args[0] = project base dir (pom.xml)
-        // args[1] = compiled classes directory (target/classes)
-        String projectDir = args.length > 0 ? args[0] : System.getProperty("user.dir");
-        String classesDir = args.length > 1 ? args[1] : Path.of(projectDir, "target", "classes").toString();
-
+    /**
+     * Run instrumentation on all classes under classesDir.
+     *
+     * @param projectDir        The Maven project base directory (where pom.xml is).
+     * @param classesDir        The compiled output directory (usually target/classes).
+     * @param userClassLoader   A classloader that can see user classes and dependencies.
+     */
+    public static void run(Path projectDir, Path classesDir, ClassLoader userClassLoader) throws Exception {
         // Load conventions.json
-        Path conventionsPath = Path.of(projectDir, "conventions.json");
+        Path conventionsPath = projectDir.resolve("conventions.json");
         List<Convention> conventions = ConventionLoader.loadConventions(conventionsPath.toString());
-        System.out.println(classesDir+" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        // Walk all .class files in target/classes
-        URL classesUrl = Path.of(classesDir).toUri().toURL();
-        try (URLClassLoader classLoader = new URLClassLoader(new URL[]{classesUrl}, ASMInsertExample.class.getClassLoader())) {
 
-            // Walk all .class files
-            Files.walk(Path.of(classesDir))
+        // Add project classes to the loader
+        URL classesUrl = classesDir.toUri().toURL();
+        try (URLClassLoader classLoader = new URLClassLoader(new URL[]{classesUrl}, userClassLoader)) {
+
+            Files.walk(classesDir)
                     .filter(p -> p.toString().endsWith(".class"))
                     .forEach(classFile -> {
                         try {
-                            // Convert path to class name
-                            String className = Path.of(classesDir).relativize(classFile)
+                            // Convert path to fully-qualified class name
+                            String className = classesDir
+                                    .relativize(classFile)
                                     .toString()
-                                    .replace(System.getProperty("file.separator"), ".")
+                                    .replace(File.separatorChar, '.')
                                     .replaceAll("\\.class$", "");
 
-                            // Load the class using URLClassLoader
+                            // Load the class using provided classloader
                             Class<?> clazz = Class.forName(className, false, classLoader);
 
                             // Read class bytes
@@ -51,8 +51,9 @@ public class ASMInsertExample {
                             byte[] modifiedClass = classBytes;
 
                             for (Convention convention : conventions) {
-                                ClassWriter classWriter = new ClassWriter(classReader, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
-                                ConventionVisitor visitor = new ConventionVisitor(classWriter, convention, clazz);
+                                ClassWriter classWriter = new ClassWriter(classReader,
+                                        ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
+                                ConventionVisitor visitor = new ConventionVisitor(classWriter, convention, clazz,userClassLoader);
                                 classReader.accept(visitor, 0);
                                 modifiedClass = classWriter.toByteArray();
                                 classReader = new ClassReader(modifiedClass);
