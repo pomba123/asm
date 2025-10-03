@@ -1,14 +1,16 @@
 package org.example.utils;
 
 import org.example.model.Method;
+import org.example.model.iClass;
+
 import java.lang.reflect.Field;
 
 
 public class ObjectUtils {
 
     public static String getName(Object object){
-        if(object instanceof Class)
-            return ((Class<?>) object).getSimpleName();
+        if(object instanceof iClass)
+            return ((iClass) object).getName();
         else if(object instanceof Method)
             return ((Method) object).getName();
         else
@@ -23,4 +25,7 @@ public class ObjectUtils {
             }else
                 return ((Class) object).getDeclaringClass();
     }
+
+
+
 }

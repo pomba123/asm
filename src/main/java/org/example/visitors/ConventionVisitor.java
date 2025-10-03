@@ -1,8 +1,6 @@
 package org.example.visitors;
 
-import org.example.model.ConventionScope;
-import org.example.model.Convention;
-import org.example.model.Method;
+import org.example.model.*;
 import org.example.verifiers.ConventionVerifier;
 import org.objectweb.asm.*;
 
@@ -24,15 +22,15 @@ public class ConventionVisitor extends ClassVisitor {
     }
 
     @Override
-    public void visitEnd() {
+    public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
         boolean insert = false;
-
+        iClass clazz = new iClass(version,access,name,signature,superName,interfaces);
         if (convention.getConventionScope() == ConventionScope.CLASS) {
             try {
                 Class<?> verifierClass = userClassLoader.loadClass(convention.getImplementation());
                 ConventionVerifier verifier =
                         (ConventionVerifier) verifierClass.getDeclaredConstructor().newInstance();
-                insert = verifier.verifyConvention(visitedClass, convention.getRules());
+                insert = verifier.verifyConvention(clazz, convention.getRules());
             } catch (Exception e) {
                 throw new RuntimeException("Failed to load verifier " + convention.getImplementation(), e);
             }
@@ -41,6 +39,11 @@ public class ConventionVisitor extends ClassVisitor {
             AnnotationVisitor av = cv.visitAnnotation(convention.getAnnotation().getName(), true);
             av.visitEnd();
         }
+    }
+
+    @Override
+    public void visitEnd() {
+
         super.visitEnd();
     }
 
@@ -50,7 +53,7 @@ public class ConventionVisitor extends ClassVisitor {
         boolean insert = false;
         if (convention.getConventionScope() == ConventionScope.FIELD) {
             try {
-                Field field = visitedClass.getDeclaredField(name);
+                iField field = new iField(access,descriptor,name,signature,value);
                 Class<?> verifierClass = userClassLoader.loadClass(convention.getImplementation());
                 ConventionVerifier verifier =
                         (ConventionVerifier) verifierClass.getDeclaredConstructor().newInstance();

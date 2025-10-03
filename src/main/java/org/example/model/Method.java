@@ -74,30 +74,7 @@ public class Method {
     }
 
 
-    private Class<?> getClassFor(Type type) throws ClassNotFoundException {
-        String className = type.getClassName().replace("/",".");
 
-        switch (type.getSort()) {
-            case Type.VOID:    return void.class;
-            case Type.BOOLEAN: return boolean.class;
-            case Type.CHAR:    return char.class;
-            case Type.BYTE:    return byte.class;
-            case Type.SHORT:   return short.class;
-            case Type.INT:     return int.class;
-            case Type.FLOAT:   return float.class;
-            case Type.LONG:    return long.class;
-            case Type.DOUBLE:  return double.class;
-            case Type.ARRAY:    System.out.println(type.getDescriptor()+" is array");return Class.forName(type.getDescriptor().replace("/","."));
-            case Type.OBJECT:
-                ClassLoader appLoader = Thread.currentThread().getContextClassLoader();
-                Class<?> clazz = Class.forName(className, true, appLoader);
-                System.out.println(clazz.getCanonicalName()+" on new class loader");
-                return Class.forName(className);
-            default:
-                throw new IllegalArgumentException("Unknown type: " + type);
-        }
-
-    }
 
 
 }
