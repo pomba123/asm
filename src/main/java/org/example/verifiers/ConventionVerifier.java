@@ -1,12 +1,12 @@
 package org.example.verifiers;
 
-import org.example.model.Rule;
-
+import org.example.model.ASMElement;
+import org.example.model.Parameter;
 import java.io.IOException;
 import java.util.List;
 
 public interface ConventionVerifier {
-
-    public boolean verifyConvention(Object element, List<Rule> rules) throws IOException;
+    public void init(List<Parameter> parameters);
+    public boolean verifyConvention(ASMElement element) throws IOException;
 
 }

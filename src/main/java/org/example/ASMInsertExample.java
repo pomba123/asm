@@ -26,7 +26,6 @@ public class ASMInsertExample {
         // Load conventions.json
         Path conventionsPath = projectDir.resolve("conventions.json");
         List<Convention> conventions = ConventionLoader.loadConventions(conventionsPath.toString());
-
         // Add project classes to the loader
         URL classesUrl = classesDir.toUri().toURL();
         try (URLClassLoader classLoader = new URLClassLoader(new URL[]{classesUrl}, userClassLoader)) {
@@ -43,7 +42,6 @@ public class ASMInsertExample {
                                     .replaceAll("\\.class$", "");
 
                             // Load the class using provided classloader
-                            Class<?> clazz = Class.forName(className, false, classLoader);
 
                             // Read class bytes
                             byte[] classBytes = Files.readAllBytes(classFile);
@@ -53,7 +51,7 @@ public class ASMInsertExample {
                             for (Convention convention : conventions) {
                                 ClassWriter classWriter = new ClassWriter(classReader,
                                         ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
-                                ConventionVisitor visitor = new ConventionVisitor(classWriter, convention, clazz,userClassLoader);
+                                ConventionVisitor visitor = new ConventionVisitor(classWriter, convention);
                                 classReader.accept(visitor, 0);
                                 modifiedClass = classWriter.toByteArray();
                                 classReader = new ClassReader(modifiedClass);

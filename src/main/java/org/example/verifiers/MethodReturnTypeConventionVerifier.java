@@ -1,18 +1,35 @@
 package org.example.verifiers;
 
+import org.example.model.ASMElement;
 import org.example.model.Method;
+import org.example.model.Parameter;
 import org.example.model.Rule;
+import org.example.utils.ObjectUtils;
 
 import java.io.IOException;
 import java.util.List;
 
 public class MethodReturnTypeConventionVerifier implements ConventionVerifier{
+    private Class<?> returnType;
+
+
     @Override
-    public boolean verifyConvention(Object element, List<Rule> rules) throws IOException {
-        Rule methodReturnType = rules.get(0);
-        String returnType = methodReturnType.getParameters().get(0).getValue();
+    public void init(List<Parameter> parameters) {
+        try {
+            returnType = ObjectUtils.resolveClass(parameters.get(0).getType());
+            System.out.println(returnType);
+
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        ;
+
+    }
+
+    @Override
+    public boolean verifyConvention(ASMElement element) throws IOException {
         Method method = (Method) element;
-        String returnTypeClass = method.getReturnType();
-        return returnType.equals(returnTypeClass);
+        System.out.println(((Method) element).getReturnType());
+        return returnType==method.getReturnType();
     }
 }

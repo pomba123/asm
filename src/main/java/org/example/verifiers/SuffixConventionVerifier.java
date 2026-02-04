@@ -1,5 +1,9 @@
 package org.example.verifiers;
 
+import org.example.model.ASMElement;
+import org.example.model.Method;
+import org.example.model.Parameter;
+import org.example.utils.ASMElementUtils;
 import org.example.utils.ObjectUtils;
 import org.example.model.Rule;
 
@@ -7,18 +11,17 @@ import java.io.IOException;
 import java.util.List;
 
 public class SuffixConventionVerifier implements ConventionVerifier{
+    private String suffix;
+
+    public void init(List<Parameter> parameters){
+
+        suffix = parameters.get(0).getValue();
+
+    }
     @Override
-    public boolean verifyConvention(Object object, List<Rule> rules) throws IOException {
-        boolean hasSuffixOnEnclosing = false;
-        String objectName = ObjectUtils.getName(object);
-        String suffix = rules.get(0).getParameters().get(0).getValue();
-        boolean searchOnEnclosing = rules.get(0).isSearchOnEnclosingElement();
-        boolean hasSuffix = objectName.endsWith(suffix);
-        if(searchOnEnclosing){
-            Class clazz = ObjectUtils.getDeclaringClass(object);
-            String objectClassName = ObjectUtils.getName(clazz);
-            hasSuffixOnEnclosing = objectClassName.endsWith(suffix);
-        }
-        return hasSuffix || hasSuffixOnEnclosing;
+    public boolean verifyConvention(ASMElement object) throws IOException {
+
+        String objectName = ASMElementUtils.getName(object);
+        return objectName.endsWith(suffix);
     }
 }

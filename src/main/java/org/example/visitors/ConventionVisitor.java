@@ -1,49 +1,86 @@
 package org.example.visitors;
 
 import org.example.model.*;
+import org.example.utils.ASMElementUtils;
+import org.example.utils.ObjectUtils;
 import org.example.verifiers.ConventionVerifier;
-import org.objectweb.asm.*;
+import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.FieldVisitor;
+import org.objectweb.asm.MethodVisitor;
+import org.example.model.Class;
+import org.example.model.Field;
 
-import java.lang.reflect.Field;
 
 import static org.objectweb.asm.Opcodes.ASM9;
 
 public class ConventionVisitor extends ClassVisitor {
 
-    private final Convention convention;
-    private final Class<?> visitedClass;
-    private final ClassLoader userClassLoader;
-
-    public ConventionVisitor(ClassVisitor classVisitor, Convention convention, Class<?> clazz, ClassLoader userClassLoader) {
+    private Convention convention;
+    private Class visitedClass;
+    private String targetAnnotationDescriptor;
+    private boolean annotationAlreadyPresent = false;
+    public ConventionVisitor(ClassVisitor classVisitor, Convention convention) {
         super(ASM9, classVisitor);
         this.convention = convention;
-        this.visitedClass = clazz;
-        this.userClassLoader = userClassLoader;
+
+    }
+    @Override
+    public void visit(
+            int version,
+            int access,
+            String name,
+            String signature,
+            String superName,
+            String[] interfaces) {
+
+        visitedClass = new Class(version,access,name,signature,superName,interfaces);
+        this.targetAnnotationDescriptor =
+                ASMElementUtils.toDescriptor(
+                        convention.getAnnotation().getName()
+                );
+        super.visit(version, access, name, signature, superName, interfaces);
+    }
+    @Override
+    public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
+        if (descriptor.equals(targetAnnotationDescriptor)) {
+            annotationAlreadyPresent = true;
+        }
+
+        return super.visitAnnotation(descriptor, visible);
     }
 
     @Override
-    public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+    public void visitEnd(){
         boolean insert = false;
-        iClass clazz = new iClass(version,access,name,signature,superName,interfaces);
-        if (convention.getConventionScope() == ConventionScope.CLASS) {
+
+        if(convention.getConventionScope() == ConventionScope.CLASS){
             try {
-                Class<?> verifierClass = userClassLoader.loadClass(convention.getImplementation());
-                ConventionVerifier verifier =
-                        (ConventionVerifier) verifierClass.getDeclaredConstructor().newInstance();
-                insert = verifier.verifyConvention(clazz, convention.getRules());
+                for(Rule rule : convention.getRules()){
+                    ConventionVerifier verifier = (ConventionVerifier) java.lang.Class.forName(rule.getImplementation()).getDeclaredConstructor().newInstance();;
+                    verifier.init(rule.getParameters());
+                    insert = verifier.verifyConvention(visitedClass);
+
+                }
             } catch (Exception e) {
-                throw new RuntimeException("Failed to load verifier " + convention.getImplementation(), e);
+                throw new RuntimeException(e);
             }
         }
-        if (insert) {
-            AnnotationVisitor av = cv.visitAnnotation(convention.getAnnotation().getName(), true);
+        if (insert && !annotationAlreadyPresent) {
+            String conventionName = convention.getAnnotation().getName();
+            String descriptorToAnnotationName = ASMElementUtils.toDescriptor(conventionName);
+            AnnotationVisitor av = cv.visitAnnotation(descriptorToAnnotationName, true);
+
+            for (Parameter param : convention.getAnnotation().getParameters()) {
+                Object typedValue = ObjectUtils.resolveValue(
+                        param.getValue(),
+                        param.getType()
+                );
+
+                av.visit(param.getName(), typedValue);
+            }
             av.visitEnd();
         }
-    }
-
-    @Override
-    public void visitEnd() {
-
         super.visitEnd();
     }
 
@@ -51,19 +88,27 @@ public class ConventionVisitor extends ClassVisitor {
     public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
         FieldVisitor fv = super.visitField(access, name, descriptor, signature, value);
         boolean insert = false;
-        if (convention.getConventionScope() == ConventionScope.FIELD) {
+        if(convention.getConventionScope() == ConventionScope.FIELD){
             try {
-                iField field = new iField(access,descriptor,name,signature,value);
-                Class<?> verifierClass = userClassLoader.loadClass(convention.getImplementation());
-                ConventionVerifier verifier =
-                        (ConventionVerifier) verifierClass.getDeclaredConstructor().newInstance();
-                insert = verifier.verifyConvention(field, convention.getRules());
+                Field field = new Field(access,name,descriptor,signature,value,visitedClass);
+                for(Rule rule : convention.getRules()){
+                    ConventionVerifier verifier = (ConventionVerifier) java.lang.Class.forName(rule.getImplementation()).getDeclaredConstructor().newInstance();;
+                    verifier.init(rule.getParameters());
+                    insert = verifier.verifyConvention(field);
+
+                }
+
             } catch (Exception e) {
-                throw new RuntimeException("Failed to verify field " + name, e);
+                throw new RuntimeException(e);
             }
         }
         if (insert) {
             return new FieldVisitor(ASM9, fv) {
+                @Override
+                public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
+                    return super.visitAnnotation(convention.getAnnotation().getName(), true);
+                }
+
                 @Override
                 public void visitEnd() {
                     AnnotationVisitor av = fv.visitAnnotation(convention.getAnnotation().getName(), true);
@@ -80,15 +125,20 @@ public class ConventionVisitor extends ClassVisitor {
         MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
         boolean insert = false;
 
-        if (convention.getConventionScope() == ConventionScope.METHOD) {
+        if(convention.getConventionScope() == ConventionScope.METHOD){
             try {
-                Method method = new Method(name, descriptor, exceptions, visitedClass);
-                Class<?> verifierClass = userClassLoader.loadClass(convention.getImplementation());
-                ConventionVerifier verifier =
-                        (ConventionVerifier) verifierClass.getDeclaredConstructor().newInstance();
-                insert = verifier.verifyConvention(method, convention.getRules());
+                Method method = new Method(name,descriptor,exceptions,visitedClass);
+
+                for(Rule rule : convention.getRules()){
+
+                    ConventionVerifier verifier = (ConventionVerifier) java.lang.Class.forName(rule.getImplementation()).getDeclaredConstructor().newInstance();;
+                    verifier.init(rule.getParameters());
+                    insert = verifier.verifyConvention(method);
+
+                }
+
             } catch (Exception e) {
-                throw new RuntimeException("Failed to verify method " + name, e);
+
             }
         }
         if (insert) {
@@ -96,6 +146,14 @@ public class ConventionVisitor extends ClassVisitor {
                 @Override
                 public void visitCode() {
                     AnnotationVisitor av = visitAnnotation(convention.getAnnotation().getName(), true);
+                    for (Parameter param : convention.getAnnotation().getParameters()) {
+                        Object typedValue = ObjectUtils.resolveValue(
+                                param.getValue(),
+                                param.getType()
+                        );
+
+                        av.visit(param.getName(), typedValue);
+                    }
                     av.visitEnd();
                     super.visitCode();
                 }

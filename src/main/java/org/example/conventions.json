@@ -3,19 +3,20 @@
     {
       "name": "SuffixConvention",
       "conventionScope": "method",
-      "implementation": "org.example.verifiers.SuffixConventionVerifier",
       "allRulesMustApply": "false",
       "rules": [
         {
-          "name": "suffix",
-          "searchOnEnclosingElement": "true",
+          "implementation": "org.example.verifiers.SuffixConventionVerifier",
           "parameters": [
             { "name": "suffix", "value": "set" }
           ]
         }],
       "annotation": {
-        "name": "org.example.annotations.forMethod",
-        "parameters": []
+        "name": "org.example.annotations.AnnotationWithParameters",
+        "parameters": [
+          {"name": "name", "value": "hello"},
+          {"name": "value", "value": 3}
+        ]
       }
    }]
 }

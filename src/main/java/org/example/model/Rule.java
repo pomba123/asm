@@ -3,12 +3,20 @@ package org.example.model;
 import java.util.List;
 
 public  class Rule {
+    private String implementation;
     private String name;  // Renamed from "rule"
     private List<Parameter> parameters;
     private boolean searchOnEnclosingElement;
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
+    public String getImplementation() {
+        return implementation;
+    }
+
+    public void setImplementation(String implementation) {
+        this.implementation = implementation;
+    }
 
     public List<Parameter> getParameters() { return parameters; }
     public void setParameters(List<Parameter> parameters) { this.parameters = parameters; }

@@ -1,51 +1,55 @@
 package org.example.model;
 
 import org.objectweb.asm.Type;
-
-public class Method {
-    private String[] parameters;
+import java.lang.Class;
+public class Method  extends ASMElement{
+    private Class<?>[] parameters;
     private String name;
-    private String[] exceptions;
-    private String returnType;
-    private Class<?> declaringClass;
-    public Method(String name, String descriptor,String[] exceptions,Class<?> declaringClass) throws ClassNotFoundException {
+    private Class<?>[] exceptions;
+    private Class<?> returnType;
+    private org.example.model.Class declaringClass;
+    public Method(String name, String descriptor,String[] exceptions,org.example.model.Class declaringClass) throws ClassNotFoundException {
         Type returnType = Type.getReturnType(descriptor);
         Type[] parametersTypes = Type.getArgumentTypes(descriptor);
         this.name = name;
-        this.declaringClass = declaringClass;
-        this.returnType = returnType.getClassName();
-        this.parameters = new String[parametersTypes.length];
-        Type[] argTypes = Type.getArgumentTypes(descriptor);
-        for(int i=0;i<argTypes.length;i++){
-            this.parameters[i] = argTypes[i].getClassName();
-            System.out.println(this.parameters[i]);
-
-        }
+        this.returnType = getClassFor(returnType);
+        this.parameters = new Class<?>[parametersTypes.length];
         if(exceptions!=null){
-            this.exceptions = new String[exceptions.length];
+            this.exceptions = new Class<?>[exceptions.length];
             for(int i=0;i<exceptions.length;i++){
                 exceptions[i] = exceptions[i].replace("/",".");
-                this.exceptions[i] = exceptions[i];
+                this.exceptions[i] = Class.forName("java.io.IOException");
             }
         }
 
+        Type[] argTypes = Type.getArgumentTypes(descriptor);
+        for(int i=0;i<argTypes.length;i++){
+            Class<?> clazz = getClassFor(argTypes[i]);
+            this.parameters[i] = clazz;
+
+        }
+
+
+
+        this.declaringClass = declaringClass;
+
 
     }
 
-    public Class<?> getDeclaringClass() {
+    public org.example.model.Class getDeclaringClass() {
         return declaringClass;
     }
 
-    public void setDeclaringClass(Class<?> declaringClass) {
+    public void setDeclaringClass(org.example.model.Class declaringClass) {
         this.declaringClass = declaringClass;
     }
 
 
-    public String[] getParameters() {
+    public Class<?>[] getParameters() {
         return parameters;
     }
 
-    public void setParameters(String[] parameters) {
+    public void setParameters(Class<?>[] parameters) {
         this.parameters = parameters;
     }
 
@@ -57,24 +61,43 @@ public class Method {
         this.name = name;
     }
 
-    public String[] getExceptions() {
+    public Class<?>[] getExceptions() {
         return exceptions;
     }
 
-    public void setExceptions(String[] exceptions) {
+    public void setExceptions(Class<?>[] exceptions) {
         this.exceptions = exceptions;
     }
 
-    public String getReturnType() {
+    public Class<?> getReturnType() {
         return returnType;
     }
 
-    public void setReturnType(String returnType) {
+    public void setReturnType(Class<?> returnType) {
         this.returnType = returnType;
     }
 
 
+    private Class<?> getClassFor(Type type) throws ClassNotFoundException {
 
+        switch (type.getSort()) {
+            case Type.VOID:    return void.class;
+            case Type.BOOLEAN: return boolean.class;
+            case Type.CHAR:    return char.class;
+            case Type.BYTE:    return byte.class;
+            case Type.SHORT:   return short.class;
+            case Type.INT:     return int.class;
+            case Type.FLOAT:   return float.class;
+            case Type.LONG:    return long.class;
+            case Type.DOUBLE:  return double.class;
+            case Type.ARRAY:
+            case Type.OBJECT:
+                return Class.forName(type.getClassName());
+            default:
+                throw new IllegalArgumentException("Unknown type: " + type);
+        }
+
+    }
 
 
 }

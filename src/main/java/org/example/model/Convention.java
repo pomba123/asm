@@ -7,7 +7,7 @@ public class Convention {
     private List<Rule> rules;
     private ConventionAnnotation annotation;
     private ConventionScope conventionScope;
-    private String implementation;
+
 
     private boolean allRulesMustApply;
     // Getters and setters
@@ -15,13 +15,6 @@ public class Convention {
         return name;
     }
 
-    public String getImplementation() {
-        return implementation;
-    }
-
-    public void setImplementation(String implementation) {
-        this.implementation = implementation;
-    }
 
     public void setName(String name) {
         this.name = name;
