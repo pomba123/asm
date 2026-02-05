@@ -8,7 +8,7 @@ public class Method  extends ASMElement{
     private Class<?>[] exceptions;
     private Class<?> returnType;
     private org.example.model.Class declaringClass;
-    public Method(String name, String descriptor,String[] exceptions,org.example.model.Class declaringClass) throws ClassNotFoundException {
+    public Method(String name, String descriptor,String[] exceptions,org.example.model.Class declaringClass)  {
         Type returnType = Type.getReturnType(descriptor);
         Type[] parametersTypes = Type.getArgumentTypes(descriptor);
         this.name = name;
@@ -18,7 +18,11 @@ public class Method  extends ASMElement{
             this.exceptions = new Class<?>[exceptions.length];
             for(int i=0;i<exceptions.length;i++){
                 exceptions[i] = exceptions[i].replace("/",".");
-                this.exceptions[i] = Class.forName("java.io.IOException");
+                try {
+                    this.exceptions[i] = Class.forName("java.io.IOException");
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
 
@@ -78,7 +82,7 @@ public class Method  extends ASMElement{
     }
 
 
-    private Class<?> getClassFor(Type type) throws ClassNotFoundException {
+    private Class<?> getClassFor(Type type)  {
 
         switch (type.getSort()) {
             case Type.VOID:    return void.class;
@@ -92,7 +96,11 @@ public class Method  extends ASMElement{
             case Type.DOUBLE:  return double.class;
             case Type.ARRAY:
             case Type.OBJECT:
-                return Class.forName(type.getClassName());
+                try{
+                    return Class.forName(type.getClassName());
+                }catch (ClassNotFoundException ex){
+                    ex.printStackTrace();
+            }
             default:
                 throw new IllegalArgumentException("Unknown type: " + type);
         }

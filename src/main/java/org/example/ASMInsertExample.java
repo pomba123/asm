@@ -2,7 +2,8 @@ package org.example;
 
 import org.example.model.Convention;
 import org.example.utils.ConventionLoader;
-import org.example.visitors.ConventionVisitor;
+import org.example.visitors.ConventionClassVisitor;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
@@ -51,7 +52,7 @@ public class ASMInsertExample {
                             for (Convention convention : conventions) {
                                 ClassWriter classWriter = new ClassWriter(classReader,
                                         ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
-                                ConventionVisitor visitor = new ConventionVisitor(classWriter, convention);
+                                ConventionClassVisitor visitor = new ConventionClassVisitor(classWriter, convention);
                                 classReader.accept(visitor, 0);
                                 modifiedClass = classWriter.toByteArray();
                                 classReader = new ClassReader(modifiedClass);

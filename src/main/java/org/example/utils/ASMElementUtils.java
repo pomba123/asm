@@ -18,6 +18,7 @@ public class ASMElementUtils {
     }
 
     public static String toDescriptor(String conventionName){
+
         return "L" + conventionName.replace('.', '/') + ";";
     }
 }

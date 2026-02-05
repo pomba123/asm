@@ -1,0 +1,23 @@
+{
+  "conventions": [
+    {
+      "name": "SuffixConvention",
+      "conventionScope": "class",
+      "allRulesMustApply": "false",
+      "rules": [
+        {
+          "implementation": "org.example.verifiers.SuffixConventionVerifier",
+          "parameters": [
+            { "name": "suffix", "type": "String", "value": "WithConventions"
+            }
+          ]
+        }],
+      "annotation": {
+        "name": "annotations.AnnotationWithParametersForClass",
+        "parameters": [
+          {"name": "value", "value": "3", "type": "int"},
+          {"name": "name", "value": "Test", "type": "String"}
+        ]
+      }
+   }]
+}

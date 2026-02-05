@@ -17,7 +17,7 @@ public class MethodReturnTypeConventionVerifier implements ConventionVerifier{
     public void init(List<Parameter> parameters) {
         try {
             returnType = ObjectUtils.resolveClass(parameters.get(0).getType());
-            System.out.println(returnType);
+
 
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
@@ -29,7 +29,6 @@ public class MethodReturnTypeConventionVerifier implements ConventionVerifier{
     @Override
     public boolean verifyConvention(ASMElement element) throws IOException {
         Method method = (Method) element;
-        System.out.println(((Method) element).getReturnType());
         return returnType==method.getReturnType();
     }
 }
