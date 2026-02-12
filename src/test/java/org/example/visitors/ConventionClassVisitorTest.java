@@ -39,7 +39,7 @@ public class ConventionClassVisitorTest {
                   modifiedBytes,
                   Type.getDescriptor(AnnotationWithParametersForClass.class)
           );
-          
+
 
       }
   }

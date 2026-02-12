@@ -96,7 +96,6 @@ public class ConventionFieldVisitor extends FieldVisitor  {
                                 .newInstance();
 
                 verifier.init(rule.getParameters());
-
                 if (!verifier.verifyConvention(field)) {
                     return false;
                 }
