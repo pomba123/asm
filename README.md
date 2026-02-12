@@ -24,9 +24,6 @@ Add the tool as a  maven plugin in the pom.xml file of the target project.
             <phase>process-classes</phase>
         </execution>
     </executions>
-    <configuration>
-        <!-- Optional parameters if you defined any in your Mojo -->
-    </configuration>
 </plugin>
 ```
 Build your project normally.
