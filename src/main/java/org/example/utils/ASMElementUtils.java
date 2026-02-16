@@ -21,5 +21,11 @@ public class ASMElementUtils {
 
         return "L" + conventionName.replace('.', '/') + ";";
     }
+
+    public static  String getPackageName(ASMElement element){
+        return ((Class) element).getClassPackage();
+    }
+
+
 }
 

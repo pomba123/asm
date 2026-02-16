@@ -2,7 +2,6 @@ package org.example.visitors;
 
 import annotations.AnnotationWithParametersForClass;
 import classes.ClassWithConventions;
-import org.example.annotations.AnnotationWithParameters;
 import org.example.model.Convention;
 import org.example.utils.ConventionLoader;
 import org.junit.jupiter.api.Test;

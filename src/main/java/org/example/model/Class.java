@@ -2,6 +2,8 @@ package org.example.model;
 
 import org.example.utils.ClassUtils;
 
+import java.util.List;
+
 public class Class extends ASMElement {
     private int version;
     private int access;
@@ -9,7 +11,7 @@ public class Class extends ASMElement {
     private String classPackage;
     private String signature;
     private String superName;
-    private String[] interfaces;
+    private List<String> interfaces;
 
     public int getVersion() {
         return version;
@@ -59,15 +61,15 @@ public class Class extends ASMElement {
         this.superName = superName;
     }
 
-    public String[] getInterfaces() {
+    public List<String> getInterfaces() {
         return interfaces;
     }
 
-    public void setInterfaces(String[] interfaces) {
+    public void setInterfaces(List<String> interfaces) {
         this.interfaces = interfaces;
     }
-
-    public Class(int version, int access, String name, String signature, String superName, String[] interfaces){
+    public Class(){}
+    public Class(int version, int access, String name, String signature, String superName, List<String> interfaces){
 
         this.version = version;
         this.access = access;

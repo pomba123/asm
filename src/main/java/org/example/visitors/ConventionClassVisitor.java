@@ -1,5 +1,6 @@
 package org.example.visitors;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
 import org.example.model.*;
 import org.example.utils.ASMElementUtils;
 import org.example.utils.ObjectUtils;
@@ -33,7 +34,8 @@ public class ConventionClassVisitor extends ClassVisitor {
             String signature,
             String superName,
             String[] interfaces) {
-        visitedClass = new Class(version,access,name,signature,superName,interfaces);
+
+        visitedClass = new Class(version,access,name,signature,superName, Arrays.asList(interfaces));
         super.visit(version, access, name, signature, superName, interfaces);
     }
 

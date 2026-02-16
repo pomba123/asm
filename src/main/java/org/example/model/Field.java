@@ -1,10 +1,13 @@
 package org.example.model;
 
+import org.objectweb.asm.Type;
+
 public class Field  extends ASMElement{
     private int access;
     private String name;
     private String descriptor;
     private String signature;
+    private String type;
     private Object value;
     private Class declaringClazz;
     public Field(int access, String name, String descriptor, String signature, Object value,Class declaringClass){
@@ -14,6 +17,7 @@ public class Field  extends ASMElement{
         this.signature = signature;
         this.value = value;
         this.declaringClazz = declaringClass;
+        this.type = Type.getType(descriptor).getClassName();
 
     }
 
@@ -59,6 +63,10 @@ public class Field  extends ASMElement{
 
     public Class getDeclaringClazz() {
         return declaringClazz;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public void setDeclaringClazz(Class declaringClazz) {
