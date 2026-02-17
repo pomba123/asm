@@ -40,6 +40,10 @@ public class Method  extends ASMElement{
 
     }
 
+    public Method() {
+
+    }
+
     public org.example.model.Class getDeclaringClass() {
         return declaringClass;
     }

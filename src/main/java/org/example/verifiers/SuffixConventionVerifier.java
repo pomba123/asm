@@ -15,13 +15,13 @@ public class SuffixConventionVerifier implements ConventionVerifier{
 
     public void init(List<Parameter> parameters){
 
-        suffix = parameters.get(0).getValue();
+        suffix = parameters.get(0).getValue().toLowerCase();
 
     }
     @Override
     public boolean verifyConvention(ASMElement object) throws IOException {
 
-        String objectName = ASMElementUtils.getName(object);
+        String objectName = ASMElementUtils.getName(object).toLowerCase();
         return objectName.endsWith(suffix);
     }
 }

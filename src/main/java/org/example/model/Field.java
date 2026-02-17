@@ -20,7 +20,7 @@ public class Field  extends ASMElement{
         this.type = Type.getType(descriptor).getClassName();
 
     }
-
+    public Field(){}
     public int getAccess() {
         return access;
     }
@@ -67,6 +67,10 @@ public class Field  extends ASMElement{
 
     public String getType() {
         return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setDeclaringClazz(Class declaringClazz) {

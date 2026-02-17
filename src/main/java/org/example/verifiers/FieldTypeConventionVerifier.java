@@ -11,7 +11,7 @@ public class FieldTypeConventionVerifier implements ConventionVerifier{
     private String fieldType;
     @Override
     public void init(List<Parameter> parameters) {
-        fieldType = parameters.get(0).getValue();
+        fieldType = parameters.get(0).getType();
     }
 
     @Override

@@ -4,7 +4,6 @@ import org.example.model.Class;
 import org.example.model.Field;
 import org.example.model.Method;
 import org.example.model.Parameter;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,40 +12,39 @@ import java.util.List;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class PrefixConventionVerifierTest {
-    private PrefixConventionVerifier verifier;
+public class RegularExpressionConventionVerifierTest {
+    private RegularExpressionConventionVerifier verifier;
 
 
-        Parameter paramMethod = new Parameter();
-        Parameter paramField = new Parameter();
-        Parameter paramClass = new Parameter();
+    Parameter paramMethod = new Parameter();
+    Parameter paramField = new Parameter();
+    Parameter paramClass = new Parameter();
 
-        @BeforeEach
-        void setUp(){
-            paramMethod.setName("prefix");
-            paramMethod.setValue("get");
+    @BeforeEach
+    void setUp(){
+        paramMethod.setName("regex");
+        paramMethod.setValue(".Data.");
 
-            paramField.setName("prefix");
-            paramField.setValue("user");
+        paramField.setName("regex");
+        paramField.setValue(".Number.");
 
-            paramClass.setName("prefix");
-            paramClass.setValue("Payment");
-            verifier = new PrefixConventionVerifier();
+        paramClass.setName("regex");
+        paramClass.setValue(".Processing.");
+        verifier = new RegularExpressionConventionVerifier();
 
-        }
-
+    }
 
     @Test
-    void shouldReturnTrueWhenMethodPrefixMatches() throws Exception {
+    void shouldReturnTrueWhenMethodHasRegex() throws Exception {
         Method method = new Method();
-        method.setName("getUser");
+        method.setName("getDataFrom");
         verifier.init(List.of(paramMethod));
         boolean result = verifier.verifyConvention(method);
         assertTrue(result);
     }
 
     @Test
-    void shouldReturnFalseWhenMethodPrefixDoNotMatches() throws Exception {
+    void shouldReturnFalseWhenMethodHasNotRegex() throws Exception {
         Method method = new Method();
         method.setName("setUser");
         verifier.init(List.of(paramMethod));
@@ -56,9 +54,9 @@ public class PrefixConventionVerifierTest {
     }
 
     @Test
-    void shouldReturnTrueWhenFieldPrefixMatches() throws Exception {
+    void shouldReturnTrueWhenFieldHasRegex() throws Exception {
         Field field = new Field();
-        field.setName("userRepository");
+        field.setName("proessedNumberId");
 
         verifier.init(List.of(paramField));
         boolean result = verifier.verifyConvention(field);
@@ -67,7 +65,7 @@ public class PrefixConventionVerifierTest {
     }
 
     @Test
-    void shouldReturnFalseWhenFieldPrefixDoNotMatches() throws Exception {
+    void shouldReturnFalseWhenFieldDoNotHasRegex() throws Exception {
         Field field = new Field();
         field.setName("productRepository");
         verifier.init(List.of(paramField));
@@ -77,9 +75,9 @@ public class PrefixConventionVerifierTest {
     }
 
     @Test
-    void shouldReturnTrueWhenClassPrefixMatches() throws Exception {
+    void shouldReturnTrueWhenClassHasRegex() throws Exception {
         Class clazz = new Class();
-        clazz.setName("PaymentController");
+        clazz.setName("UserProcessingService");
         verifier.init(List.of(paramClass));
         boolean result = verifier.verifyConvention(clazz);
 
@@ -87,14 +85,12 @@ public class PrefixConventionVerifierTest {
     }
 
     @Test
-    void shouldReturnFalseWhenClassPrefixDoNotMatches() throws Exception {
+    void shouldReturnFalseWhenClassDoNotHasRegex() throws Exception {
         Class clazz = new Class();
         clazz.setName("ProductController");
-        verifier = new PrefixConventionVerifier();
         verifier.init(List.of(paramClass));
         boolean result = verifier.verifyConvention(clazz);
 
         assertFalse(result);
     }
-
 }

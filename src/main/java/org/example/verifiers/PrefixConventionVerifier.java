@@ -13,11 +13,12 @@ public class PrefixConventionVerifier implements  ConventionVerifier{
 
     private String prefix;
     public void init(List<Parameter> parameters){
-        prefix = parameters.get(0).getValue();
+
+        prefix = parameters.get(0).getValue().toLowerCase();
     }
     @Override
     public boolean verifyConvention(ASMElement object) throws IOException {
-        String objectName = ASMElementUtils.getName(object);
+        String objectName = ASMElementUtils.getName(object).toLowerCase();
         return objectName.startsWith(prefix);
     }
 }
