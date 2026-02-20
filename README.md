@@ -26,6 +26,56 @@ Add the tool as a  maven plugin in the pom.xml file of the target project.
     </executions>
 </plugin>
 ```
-Build your project normally.
+In your project directory run 
+
+``mvn clean build``
+
+## Configuring Conventions
+
+Create a file named conventions.json at same folder of the pom.xml file. Conventions are defined according the below structure:
+
+```json
+{
+  "conventions": [
+    {
+      "name": "PrefixConvention",
+      "conventionScope": "method",
+      "allRulesMustApply": "false",
+      "rules": [
+        {
+          "implementation": "org.example.verifiers.PrefixConventionVerifier",
+          "parameters": [
+            { "name": "suffix", "type": "String", "value": "get"
+            }
+          ]
+        }],
+      "annotation": {
+        "name": "org.example.annotations.AnnotationWithParameters",
+        "parameters": [
+          {"name": "value", "value": "3", "type": "int"},
+          {"name": "name", "value": "false", "type": "boolean"}
+        ]
+      }
+   }]
+}
+```
+
+1. **name**  
+   *Description:* The convention name identifier, PrefixConvention in this example
+
+2. **conventionScope**  
+   *Description:* The scope to where the convention must apply, class field and method are supported so far.
+
+3. **allRulesMustApply**  
+   *Description:* When multiple rules are defined to a convention, all of them must apply for convention to verify.
+
+4. **Rules**  
+   *Description:* Rules have two fileds. Implementation, where the full verifier class name must be provided, and parameters, which are the parameters that the verifier will consume.
+   Parameter have their name, type and the value. In this example the class PrefixConventionVerifier will search all methods looking for the prefix "get".
+
+6. **annotation**  
+     
+   *Description:* When a convention is met, a given annotation must be inserted in the final bytecode. The specification requires the full annotation name, and the annotation parameters if any following the same parameter structure mentioned before.
+
 
 
