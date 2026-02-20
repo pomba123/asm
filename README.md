@@ -73,9 +73,43 @@ Create a file named conventions.json at same folder of the pom.xml file. Convent
    *Description:* Rules have two fileds. Implementation, where the full verifier class name must be provided, and parameters, which are the parameters that the verifier will consume.
    Parameter have their name, type and the value. In this example the class PrefixConventionVerifier will search all methods looking for the prefix "get".
 
-6. **annotation**  
-     
+6. **annotation**
    *Description:* When a convention is met, a given annotation must be inserted in the final bytecode. The specification requires the full annotation name, and the annotation parameters if any following the same parameter structure mentioned before.
+
+   ## Supported Conventions
+
+ **ClassImplementsInterfaceConvention**  
+   **Scope:** class  
+   **Description:** Verifies if a given class implements a given interface.
+
+ **ClassInPackageConventionVerifier**  
+   **Scope:** class  
+   **Description:** Verifies if a given class is in a given package.
+
+ **ElementNameConventionVerifier**  
+   **Scope:** class, method, or field  
+   **Description:** Verifies if a given element has that exact name.
+
+ **FieldTypeConventionVerifier**  
+   **Scope:** field  
+   **Description:** Verifies if a given field is of a given type.
+
+ **MethodReturnTypeConvention**  
+   **Scope:** method  
+   **Description:** Verifies if a given method returns a given type.
+
+ **PrefixConventionVerifier**  
+   **Scope:** class, method, or field  
+   **Description:** Verifies if a given code element name has a given prefix.
+
+ **SuffixConventionVerifier**  
+   **Scope:** class, method, or field  
+   **Description:** Verifies if a given code element name has a given suffix.
+
+ **RegularExpressionConventionVerifier**  
+   **Scope:** class, method, or field  
+   **Description:** 
+   - Verifies if a given code element name matches a given regex. 
 
 
 
