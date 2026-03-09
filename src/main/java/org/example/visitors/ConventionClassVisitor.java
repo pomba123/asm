@@ -69,7 +69,6 @@ public class ConventionClassVisitor extends ClassVisitor {
             boolean insert = verifyConvention();
 
             if (insert) {
-               ;
                 addAnnotation();
             }
         }
@@ -78,8 +77,9 @@ public class ConventionClassVisitor extends ClassVisitor {
     }
 
     private boolean verifyConvention() {
-        System.out.println(visitedClass.getName());
+
         try {
+            boolean allRulesMustApply = convention.isAllRulesMustApply();
             for (Rule rule : convention.getRules()) {
                 ConventionVerifier verifier =
                         (ConventionVerifier) java.lang.Class
@@ -87,8 +87,8 @@ public class ConventionClassVisitor extends ClassVisitor {
                                 .getDeclaredConstructor()
                                 .newInstance();
 
-                verifier.init(rule.getParameters());
-                if (!verifier.verifyConvention(visitedClass)) {
+                verifier.init(rule);
+                if (!verifier.verifyConvention(visitedClass) && allRulesMustApply) {
                     return false;
                 }
             }

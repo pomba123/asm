@@ -35,9 +35,7 @@ public class ConventionMethodVisitor extends MethodVisitor {
         this.declaringClass = declaringClass;
     }
 
-    /* -------------------------------------------------------
-     * Detect existing METHOD annotations
-     * ------------------------------------------------------- */
+
     @Override
     public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
 
@@ -53,9 +51,7 @@ public class ConventionMethodVisitor extends MethodVisitor {
         return super.visitAnnotation(descriptor, visible);
     }
 
-    /* -------------------------------------------------------
-     * Inject METHOD annotation at visitEnd (CORRECT PLACE)
-     * ------------------------------------------------------- */
+
     @Override
     public void visitEnd() {
 
@@ -80,7 +76,7 @@ public class ConventionMethodVisitor extends MethodVisitor {
                     exceptions,
                     declaringClass
             );
-
+            boolean allRulesMustApply = convention.isAllRulesMustApply();
             for (Rule rule : convention.getRules()) {
                 ConventionVerifier verifier =
                         (ConventionVerifier) java.lang.Class
@@ -88,9 +84,9 @@ public class ConventionMethodVisitor extends MethodVisitor {
                                 .getDeclaredConstructor()
                                 .newInstance();
 
-                verifier.init(rule.getParameters());
+                verifier.init(rule);
 
-                if (!verifier.verifyConvention(method)) {
+                if (!verifier.verifyConvention(method) && allRulesMustApply) {
                     return false;
                 }
             }

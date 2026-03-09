@@ -2,6 +2,7 @@ package org.example.verifiers;
 
 import org.example.model.Class;
 import org.example.model.Parameter;
+import org.example.model.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,8 +21,9 @@ public class ClassInPackageConventionVerifierTest {
         Parameter param = new Parameter();
         param.setName("package");
         param.setValue("org.example.package");
-
-        verifier.init(List.of(param));
+        Rule rule = new Rule();
+        rule.setParameters(List.of(param));
+        verifier.init(rule);
     }
 
     @Test

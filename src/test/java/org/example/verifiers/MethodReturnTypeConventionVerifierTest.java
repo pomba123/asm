@@ -3,6 +3,7 @@ package org.example.verifiers;
 import org.example.model.Field;
 import org.example.model.Method;
 import org.example.model.Parameter;
+import org.example.model.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,12 +18,12 @@ public class MethodReturnTypeConventionVerifierTest {
     @BeforeEach
     void setUp() {
         verifier = new MethodReturnTypeConventionVerifier();
-
+        Rule rule = new Rule();
         Parameter param = new Parameter();
         param.setName("returnType");
         param.setType("double");
-
-        verifier.init(List.of(param));
+        rule.setParameters(List.of(param));
+        verifier.init(rule);
     }
 
     @Test

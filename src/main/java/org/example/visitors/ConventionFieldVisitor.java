@@ -40,9 +40,7 @@ public class ConventionFieldVisitor extends FieldVisitor  {
         this.declaringClass= declaringClass;
     }
 
-    /* -------------------------------------------------------
-     * Detect existing FIELD annotations
-     * ------------------------------------------------------- */
+  
     @Override
     public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
 
@@ -58,9 +56,7 @@ public class ConventionFieldVisitor extends FieldVisitor  {
         return super.visitAnnotation(descriptor, visible);
     }
 
-    /* -------------------------------------------------------
-     * Inject FIELD annotation at visitEnd
-     * ------------------------------------------------------- */
+
     @Override
     public void visitEnd() {
 
@@ -87,7 +83,7 @@ public class ConventionFieldVisitor extends FieldVisitor  {
                     fieldValue,
                     declaringClass
             );
-
+            boolean allRulesMustApply = convention.isAllRulesMustApply();
             for (Rule rule : convention.getRules()) {
                 ConventionVerifier verifier =
                         (ConventionVerifier) Class
@@ -95,8 +91,8 @@ public class ConventionFieldVisitor extends FieldVisitor  {
                                 .getDeclaredConstructor()
                                 .newInstance();
 
-                verifier.init(rule.getParameters());
-                if (!verifier.verifyConvention(field)) {
+                verifier.init(rule);
+                if (!verifier.verifyConvention(field) && allRulesMustApply) {
                     return false;
                 }
             }

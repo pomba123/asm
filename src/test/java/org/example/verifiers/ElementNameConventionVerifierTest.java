@@ -1,9 +1,7 @@
 package org.example.verifiers;
 
+import org.example.model.*;
 import org.example.model.Class;
-import org.example.model.Field;
-import org.example.model.Method;
-import org.example.model.Parameter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,7 +34,9 @@ public class ElementNameConventionVerifierTest {
     void shouldReturnTrueWhenMethodPrefixMatches() throws Exception {
         Method method = new Method();
         method.setName("getUser");
-        verifier.init(List.of(paramMethod));
+        Rule rule = new Rule();
+        rule.setParameters(List.of(paramMethod));
+        verifier.init(rule);
         boolean result = verifier.verifyConvention(method);
         assertTrue(result);
     }
@@ -45,7 +45,9 @@ public class ElementNameConventionVerifierTest {
     void shouldReturnFalseWhenMethodPrefixDoNotMatches() throws Exception {
         Method method = new Method();
         method.setName("setUser");
-        verifier.init(List.of(paramMethod));
+        Rule rule = new Rule();
+        rule.setParameters(List.of(paramMethod));
+        verifier.init(rule);
         boolean result = verifier.verifyConvention(method);
 
         assertFalse(result);
@@ -56,7 +58,9 @@ public class ElementNameConventionVerifierTest {
         Field field = new Field();
         field.setName("user");
 
-        verifier.init(List.of(paramField));
+        Rule rule = new Rule();
+        rule.setParameters(List.of(paramField));
+        verifier.init(rule);
         boolean result = verifier.verifyConvention(field);
 
         assertTrue(result);
@@ -66,7 +70,9 @@ public class ElementNameConventionVerifierTest {
     void shouldReturnFalseWhenFieldPrefixDoNotMatches() throws Exception {
         Field field = new Field();
         field.setName("userRepository");
-        verifier.init(List.of(paramField));
+        Rule rule = new Rule();
+        rule.setParameters(List.of(paramField));
+        verifier.init(rule);
         boolean result = verifier.verifyConvention(field);
 
         assertFalse(result);
@@ -76,7 +82,9 @@ public class ElementNameConventionVerifierTest {
     void shouldReturnTrueWhenClassPrefixMatches() throws Exception {
         Class clazz = new Class();
         clazz.setName("UserController");
-        verifier.init(List.of(paramClass));
+        Rule rule = new Rule();
+        rule.setParameters(List.of(paramClass));
+        verifier.init(rule);
         boolean result = verifier.verifyConvention(clazz);
 
         assertTrue(result);
@@ -86,7 +94,9 @@ public class ElementNameConventionVerifierTest {
     void shouldReturnFalseWhenClassPrefixDoNotMatches() throws Exception {
         Class clazz = new Class();
         clazz.setName("ProductController");
-        verifier.init(List.of(paramClass));
+        Rule rule = new Rule();
+        rule.setParameters(List.of(paramClass));
+        verifier.init(rule);
         boolean result = verifier.verifyConvention(clazz);
 
         assertFalse(result);

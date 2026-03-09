@@ -2,6 +2,7 @@ package org.example.verifiers;
 
 import org.example.model.ASMElement;
 import org.example.model.Parameter;
+import org.example.model.Rule;
 import org.example.utils.ASMElementUtils;
 
 import java.io.IOException;
@@ -11,7 +12,8 @@ public class RegularExpressionConventionVerifier implements ConventionVerifier{
     private String regex;
     private String upperCaseRegex;
     @Override
-    public void init(List<Parameter> parameters) {
+    public void init(Rule rule) {
+        List<Parameter> parameters = rule.getParameters();
         this.regex = parameters.get(0).getValue();
         upperCaseRegex = regex;
         String firstLetStr = upperCaseRegex.substring(0, 1);

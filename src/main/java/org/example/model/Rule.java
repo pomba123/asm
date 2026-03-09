@@ -9,7 +9,7 @@ public  class Rule {
     private boolean searchOnEnclosingElement;
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-
+    private boolean subtype;
     public String getImplementation() {
         return implementation;
     }
@@ -27,5 +27,13 @@ public  class Rule {
 
     public void setSearchOnEnclosingElement(boolean searchOnEnclosingElement) {
         this.searchOnEnclosingElement = searchOnEnclosingElement;
+    }
+
+    public boolean isSubtype() {
+        return subtype;
+    }
+
+    public void setSubtype(boolean subtype) {
+        this.subtype = subtype;
     }
 }

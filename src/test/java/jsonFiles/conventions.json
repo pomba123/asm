@@ -1,0 +1,546 @@
+{
+  "conventions": [
+
+    {
+      "name": "MetaModelMethodGenerated",
+      "conventionScope": "method",
+      "allRulesMustApply": "false",
+      "rules": [
+        {
+          "implementation": "org.example.verifiers.SuffixConventionVerifier",
+          "parameters": [
+            {"name": "suffix", "type": "String", "value": "MetaModel"}
+          ]
+        }
+      ],
+      "annotation": {
+        "name": "Generated",
+        "parameters": [
+          {"name": "value","value":"com.github.javaparser.generator.core.node.GetMetaModelGenerator","type":"String"}
+        ]
+      }
+    },
+
+    {
+      "name": "MetaModelClassGenerated",
+      "conventionScope": "class",
+      "allRulesMustApply": "false",
+      "canBeSubtype": "false",
+      "rules": [
+        {
+          "implementation": "org.example.verifiers.SuffixConventionVerifier",
+          "parameters": [
+            {"name": "suffix", "type": "String", "value": "MetaModel"}
+          ]
+        }
+      ],
+      "annotation": {
+        "name": "Generated",
+        "parameters": [
+          {"name":"value","value":"com.github.javaparser.generator.metamodel.NodeMetaModelGenerator","type":"String"}
+        ]
+      }
+    },
+
+    {
+      "name": "MetaModelConstructorGenerated",
+      "conventionScope": "method",
+      "allRulesMustApply": "true",
+      "rules": [
+
+        {
+          "implementation": "org.example.verifiers.ElementNameConventionVerifier",
+          "parameters": [
+            {"name":"name","type":"String","value":"<init>"}
+          ]
+        },
+
+        {
+          "implementation": "org.example.verifiers.SuffixConventionVerifier",
+          "SearchOnEnclosing": "true",
+          "parameters": [
+            {"name":"suffix","type":"String","value":"MetaModel"}
+          ]
+        }
+
+      ],
+      "annotation": {
+        "name": "Generated",
+        "parameters": [
+          {"name":"value","value":"com.github.javaparser.generator.metamodel.NodeMetaModelGenerator","type":"String"}
+        ]
+      }
+    },
+
+    {
+      "name": "TokenRangeStringConstructor",
+      "conventionScope": "method",
+      "allRulesMustApply": "true",
+      "rules": [
+
+        {
+          "implementation": "org.example.verifiers.ElementNameConventionVerifier",
+          "parameters": [
+            {"name":"name","type":"String","value":"<init>"}
+          ]
+        },
+
+        {
+          "implementation": "org.example.verifiers.MethodParamListConventionVerifier",
+          "SearchOnEnclosing": "false",
+          "parameters": [
+            {"name":"param1","type":"TokenRange","value":""},
+            {"name":"param2","type":"String","value":""}
+          ]
+        }
+
+      ],
+      "annotation": {
+        "name":"Generated",
+        "parameters":[
+          {"name":"value","value":"com.github.javaparser.generator.core.node.MainConstructorGenerator","type":"String"}
+        ]
+      }
+    },
+
+    {
+      "name": "TokenRangeNameNodeListConstructor",
+      "conventionScope": "method",
+      "allRulesMustApply": "true",
+      "rules": [
+
+        {
+          "implementation":"org.example.verifiers.ElementNameConventionVerifier",
+          "parameters":[
+            {"name":"name","type":"String","value":"<init>"}
+          ]
+        },
+
+        {
+          "implementation":"org.example.verifiers.MethodParamListConventionVerifier",
+          "SearchOnEnclosing":"false",
+          "parameters":[
+            {"name":"param1","type":"TokenRange","value":""},
+            {"name":"param2","type":"Name","value":""},
+            {"name":"param3","type":"NodeList","value":""}
+          ]
+        }
+
+      ],
+      "annotation":{
+        "name":"Generated",
+        "parameters":[
+          {"name":"value","value":"com.github.javaparser.generator.core.node.MainConstructorGenerator","type":"String"}
+        ]
+      }
+    },
+
+    {
+      "name":"TokenRangeSimpleNameConstructor",
+      "conventionScope":"method",
+      "allRulesMustApply":"true",
+      "rules":[
+
+        {
+          "implementation":"org.example.verifiers.ElementNameConventionVerifier",
+          "parameters":[
+            {"name":"name","type":"String","value":"<init>"}
+          ]
+        },
+
+        {
+          "implementation":"org.example.verifiers.MethodParamListConventionVerifier",
+          "SearchOnEnclosing":"false",
+          "parameters":[
+            {"name":"param1","type":"TokenRange","value":""},
+            {"name":"param2","type":"SimpleName","value":""}
+          ]
+        }
+
+      ],
+      "annotation":{
+        "name":"Generated",
+        "parameters":[
+          {"name":"value","value":"com.github.javaparser.generator.core.node.MainConstructorGenerator","type":"String"}
+        ]
+      }
+    },
+
+    {
+      "name":"TokenRangeExpressionConstructor",
+      "conventionScope":"method",
+      "allRulesMustApply":"true",
+      "rules":[
+
+        {
+          "implementation":"org.example.verifiers.ElementNameConventionVerifier",
+          "parameters":[
+            {"name":"name","type":"String","value":"<init>"}
+          ]
+        },
+
+        {
+          "implementation":"org.example.verifiers.MethodParamListConventionVerifier",
+          "SearchOnEnclosing":"false",
+          "parameters":[
+            {"name":"param1","type":"TokenRange","value":""},
+            {"name":"param2","type":"Expression","value":""}
+          ]
+        }
+
+      ],
+      "annotation":{
+        "name":"Generated",
+        "parameters":[
+          {"name":"value","value":"com.github.javaparser.generator.core.node.MainConstructorGenerator","type":"String"}
+        ]
+      }
+    },
+
+    {
+      "name":"NodePrivateFieldInternalProperty",
+      "conventionScope":"field",
+      "allRulesMustApply":"true",
+      "rules":[
+
+        {
+          "implementation":"org.example.verifiers.ClassOfTypeConventionVerifier",
+          "SearchOnEnclosing":"true",
+          "parameters":[
+            {"name":"type","type":"String","value":"com.github.javaparser.ast.Node"}
+          ]
+        }
+
+      ],
+      "annotation":{
+        "name":"InternalProperty",
+        "parameters":[]
+      },
+      "canBeSubtype":"true"
+    },
+
+    {
+      "name":"TypeSolverBuilderReturnNonNull",
+      "conventionScope":"method",
+      "allRulesMustApply":"false",
+      "rules":[
+        {
+          "implementation":"org.example.verifiers.MethodReturnTypeConventionVerifier",
+          "parameters":[
+            {"name":"type","type":"String","value":"TypeSolverBuilder"}
+          ]
+        }
+      ],
+      "annotation":{
+        "name":"NonNull",
+        "parameters":[]
+      }
+    },
+
+    {
+      "name":"ParseCompilationUnitNotNullParams",
+      "conventionScope":"method",
+      "allRulesMustApply":"true",
+      "rules":[
+
+        {
+          "implementation":"org.example.verifiers.PrefixConventionVerifier",
+          "parameters":[
+            {"name":"prefix","type":"String","value":"parse"}
+          ]
+        },
+
+        {
+          "implementation":"org.example.verifiers.MethodReturnTypeConventionVerifier",
+          "parameters":[
+            {"name":"type","type":"String","value":"CompilationUnit"}
+          ]
+        }
+
+      ],
+      "annotation":{
+        "name":"NotNull",
+        "parameters":[]
+      }
+    },
+
+    {
+      "name":"ReplaceMethodGenerated",
+      "conventionScope":"method",
+      "allRulesMustApply":"false",
+      "rules":[
+        {
+          "implementation":"org.example.verifiers.ElementNameConventionVerifier",
+          "parameters":[
+            {"name":"name","type":"String","value":"replace"}
+          ]
+        }
+      ],
+      "annotation":{
+        "name":"Generated",
+        "parameters":[
+          {"name":"value","value":"com.github.javaparser.generator.core.node.GetMetaModelGenerator","type":"String"}
+        ]
+      }
+    },
+
+    {
+      "name":"AcceptMethodGenerated",
+      "conventionScope":"method",
+      "allRulesMustApply":"false",
+      "rules":[
+        {
+          "implementation":"org.example.verifiers.ElementNameConventionVerifier",
+          "parameters":[
+            {"name":"name","type":"String","value":"accept"}
+          ]
+        },
+        {
+          "implementation":"org.example.verifiers.MethodReturnTypeConventionVerifier",
+          "parameters":[
+            {"name":"name","type":"String","value":"accept"}
+          ]
+        }
+      ],
+      "annotation":{
+        "name":"Generated",
+        "parameters":[
+          {"name":"value","value":"com.github.javaparser.generator.core.node.AcceptGenerator","type":"String"}
+        ]
+      }
+    },
+
+    {
+      "name":"RemoveBodyPackage",
+      "conventionScope":"method",
+      "allRulesMustApply":"true",
+      "rules":[
+
+        {
+          "implementation":"org.example.verifiers.SuffixConventionVerifier",
+          "parameters":[
+            {"name":"suffix","type":"String","value":"remove"}
+          ]
+        },
+
+        {
+          "implementation":"org.example.verifiers.ClassInPackageConventionVerifier",
+          "SearchOnEnclosing":"true",
+          "parameters":[
+            {"name":"package","type":"String","value":"com.github.javaparser.ast.body"}
+          ]
+        }
+
+      ],
+      "annotation":{
+        "name":"Generated",
+        "parameters":[
+          {"name":"value","value":"com.github.javaparser.generator.core.node.RemoveGenerator","type":"String"}
+        ]
+      }
+    },
+
+    {
+      "name":"RemoveExprPackage",
+      "conventionScope":"method",
+      "allRulesMustApply":"true",
+      "rules":[
+
+        {
+          "implementation":"org.example.verifiers.SuffixConventionVerifier",
+          "parameters":[
+            {"name":"suffix","type":"String","value":"remove"}
+          ]
+        },
+
+        {
+          "implementation":"org.example.verifiers.ClassInPackageConventionVerifier",
+          "SearchOnEnclosing":"true",
+          "parameters":[
+            {"name":"package","type":"String","value":"com.github.javaparser.ast.expr"}
+          ]
+        }
+
+      ],
+      "annotation":{
+        "name":"Generated",
+        "parameters":[
+          {"name":"value","value":"com.github.javaparser.generator.core.node.RemoveGenerator","type":"String"}
+        ]
+      }
+    },
+
+    {
+      "name":"RemoveModulePackage",
+      "conventionScope":"method",
+      "allRulesMustApply":"true",
+      "rules":[
+
+        {
+          "implementation":"org.example.verifiers.SuffixConventionVerifier",
+          "parameters":[
+            {"name":"suffix","type":"String","value":"remove"}
+          ]
+        },
+
+        {
+          "implementation":"org.example.verifiers.ClassInPackageConventionVerifier",
+          "SearchOnEnclosing":"true",
+          "parameters":[
+            {"name":"package","type":"String","value":"com.github.javaparser.ast.module"}
+          ]
+        }
+
+      ],
+      "annotation":{
+        "name":"Generated",
+        "parameters":[
+          {"name":"value","value":"com.github.javaparser.generator.core.node.RemoveGenerator","type":"String"}
+        ]
+      }
+    },
+
+    {
+      "name":"RemoveStmtPackage",
+      "conventionScope":"method",
+      "allRulesMustApply":"true",
+      "rules":[
+
+        {
+          "implementation":"org.example.verifiers.SuffixConventionVerifier",
+          "parameters":[
+            {"name":"suffix","type":"String","value":"remove"}
+          ]
+        },
+
+        {
+          "implementation":"org.example.verifiers.ClassInPackageConventionVerifier",
+          "SearchOnEnclosing":"true",
+          "parameters":[
+            {"name":"package","type":"String","value":"com.github.javaparser.ast.stmt"}
+          ]
+        }
+
+      ],
+      "annotation":{
+        "name":"Generated",
+        "parameters":[
+          {"name":"value","value":"com.github.javaparser.generator.core.node.RemoveGenerator","type":"String"}
+        ]
+      }
+    },
+
+    {
+      "name":"RemoveTypePackage",
+      "conventionScope":"method",
+      "allRulesMustApply":"true",
+      "rules":[
+
+        {
+          "implementation":"org.example.verifiers.SuffixConventionVerifier",
+          "parameters":[
+            {"name":"suffix","type":"String","value":"remove"}
+          ]
+        },
+
+        {
+          "implementation":"org.example.verifiers.ClassInPackageConventionVerifier",
+          "SearchOnEnclosing":"true",
+          "parameters":[
+            {"name":"package","type":"String","value":"com.github.javaparser.ast.type"}
+          ]
+        }
+
+      ],
+      "annotation":{
+        "name":"Generated",
+        "parameters":[
+          {"name":"value","value":"com.github.javaparser.generator.core.node.RemoveGenerator","type":"String"}
+        ]
+      }
+    },
+
+    {
+      "name":"GetModifiersGenerated",
+      "conventionScope":"method",
+      "allRulesMustApply":"false",
+      "rules":[
+        {
+          "implementation":"org.example.verifiers.ElementNameConventionVerifier",
+          "parameters":[
+            {"name":"name","type":"String","value":"getModifiers"}
+          ]
+        }
+      ],
+      "annotation":{
+        "name":"Generated",
+        "parameters":[
+          {"name":"value","value":"com.github.javaparser.generator.core.node.PropertyGenerator","type":"String"}
+        ]
+      }
+    },
+
+    {
+      "name":"JavaParserMetamodelFieldsGenerated",
+      "conventionScope":"field",
+      "allRulesMustApply":"true",
+      "rules":[
+        {
+          "implementation":"org.example.verifiers.FieldTypeConventionVerifier",
+          "SearchOnEnclosing":"false",
+          "parameters":[
+            {"name":"type","type":"String","value":"JavaParserMetamodel"}
+          ]
+        }
+      ],
+      "annotation":{
+        "name":"Generated",
+        "parameters":[
+          {"name":"value","value":"com.github.javaparser.generator.metamodel.NodeMetaModelGenerator","type":"String"}
+        ]
+      },
+      "canBeSubtype":"true"
+    },
+
+    {
+      "name":"CloneMethodGenerated",
+      "conventionScope":"method",
+      "allRulesMustApply":"false",
+      "rules":[
+        {
+          "implementation":"org.example.verifiers.ElementNameConventionVerifier",
+          "parameters":[
+            {"name":"name","type":"String","value":"clone"}
+          ]
+        }
+      ],
+      "annotation":{
+        "name":"Generated",
+        "parameters":[
+          {"name":"value","value":"com.github.javaparser.generator.core.node.CloneGenerator","type":"String"}
+        ]
+      }
+    },
+
+    {
+      "name":"GetAnnotationsGenerated",
+      "conventionScope":"method",
+      "allRulesMustApply":"false",
+      "rules":[
+        {
+          "implementation":"org.example.verifiers.ElementNameConventionVerifier",
+          "parameters":[
+            {"name":"name","type":"String","value":"getAnnotations"}
+          ]
+        }
+      ],
+      "annotation":{
+        "name":"Generated",
+        "parameters":[
+          {"name":"value","value":"com.github.javaparser.generator.core.node.PropertyGenerator","type":"String"}
+        ]
+      }
+    }
+
+  ]
+}

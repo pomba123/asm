@@ -5,6 +5,7 @@ import org.example.model.Class;
 
 import org.example.model.Parameter;
 
+import org.example.model.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,8 +27,9 @@ public class ClassImplementsInterfaceConventionVerifierTest {
         Parameter param = new Parameter();
         param.setName("interface");
         param.setValue("java/io/Serializable");
-
-        verifier.init(List.of(param));
+        Rule rule = new Rule();
+        rule.setParameters(List.of(param));
+        verifier.init(rule);
     }
 
     @Test

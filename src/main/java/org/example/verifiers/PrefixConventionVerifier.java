@@ -12,13 +12,13 @@ import java.util.List;
 public class PrefixConventionVerifier implements  ConventionVerifier{
 
     private String prefix;
-    public void init(List<Parameter> parameters){
-
+    public void init(Rule rule){
+        List<Parameter> parameters = rule.getParameters();
         prefix = parameters.get(0).getValue().toLowerCase();
     }
     @Override
     public boolean verifyConvention(ASMElement object) throws IOException {
         String objectName = ASMElementUtils.getName(object).toLowerCase();
-        return objectName.startsWith(prefix);
+        return objectName.toLowerCase().startsWith(prefix);
     }
 }

@@ -2,8 +2,10 @@ package org.example.model;
 
 import org.objectweb.asm.Type;
 import java.lang.Class;
+import java.util.Collections;
+
 public class Method  extends ASMElement{
-    private Class<?>[] parameters;
+    private String[] parameters;
     private String name;
     private Class<?>[] exceptions;
     private Class<?> returnType;
@@ -13,7 +15,7 @@ public class Method  extends ASMElement{
         Type[] parametersTypes = Type.getArgumentTypes(descriptor);
         this.name = name;
         this.returnType = getClassFor(returnType);
-        this.parameters = new Class<?>[parametersTypes.length];
+        this.parameters = new String[parametersTypes.length];
         if(exceptions!=null){
             this.exceptions = new Class<?>[exceptions.length];
             for(int i=0;i<exceptions.length;i++){
@@ -28,8 +30,8 @@ public class Method  extends ASMElement{
 
         Type[] argTypes = Type.getArgumentTypes(descriptor);
         for(int i=0;i<argTypes.length;i++){
-            Class<?> clazz = getClassFor(argTypes[i]);
-            this.parameters[i] = clazz;
+
+            this.parameters[i] = argTypes[i].getClassName();
 
         }
 
@@ -53,11 +55,11 @@ public class Method  extends ASMElement{
     }
 
 
-    public Class<?>[] getParameters() {
+    public String[] getParameters() {
         return parameters;
     }
 
-    public void setParameters(Class<?>[] parameters) {
+    public void setParameters(String[] parameters) {
         this.parameters = parameters;
     }
 

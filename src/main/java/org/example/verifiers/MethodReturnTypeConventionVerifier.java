@@ -14,7 +14,8 @@ public class MethodReturnTypeConventionVerifier implements ConventionVerifier{
 
 
     @Override
-    public void init(List<Parameter> parameters) {
+    public void init(Rule rule) {
+        List<Parameter> parameters = rule.getParameters();
         try {
             returnType = ObjectUtils.resolveClass(parameters.get(0).getType());
 

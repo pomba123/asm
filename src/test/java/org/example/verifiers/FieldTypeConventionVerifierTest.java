@@ -2,6 +2,7 @@ package org.example.verifiers;
 
 import org.example.model.Field;
 import org.example.model.Parameter;
+import org.example.model.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,13 +17,13 @@ public class FieldTypeConventionVerifierTest {
     @BeforeEach
     void setUp() {
         verifier = new FieldTypeConventionVerifier();
-
+        Rule rule = new Rule();
         Parameter param = new Parameter();
         param.setName("hasCode");
         param.setValue("false");
         param.setType("boolean");
-
-        verifier.init(List.of(param));
+        rule.setParameters(List.of(param));
+        verifier.init(rule);
     }
 
     @Test
