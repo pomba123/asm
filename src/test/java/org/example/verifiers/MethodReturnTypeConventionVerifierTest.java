@@ -29,7 +29,7 @@ public class MethodReturnTypeConventionVerifierTest {
     @Test
     void shouldReturnTrueWhenReturnTypeMatches() throws Exception {
         Method method = new Method();
-        method.setReturnType(double.class);
+        method.setReturnType("double");
 
 
         boolean result = verifier.verifyConvention(method);
@@ -40,7 +40,7 @@ public class MethodReturnTypeConventionVerifierTest {
     @Test
     void shouldReturnFalseWhenReturnTypeDoNotMatches() throws Exception {
         Method method = new Method();
-        method.setReturnType(float.class);
+        method.setReturnType("float");
 
 
         boolean result = verifier.verifyConvention(method);

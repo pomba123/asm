@@ -62,10 +62,10 @@ public class ConventionClassVisitor extends ClassVisitor {
      * ------------------------------------------------------- */
     @Override
     public void visitEnd() {
-        System.out.println(convention.getConventionScope());
+
         if (convention.getConventionScope() == ConventionScope.CLASS
                 && !classAnnotationAlreadyPresent) {
-            System.out.println(visitedClass.getName());
+
             boolean insert = verifyConvention();
 
             if (insert) {

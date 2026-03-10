@@ -7,8 +7,6 @@ public class Convention {
     private List<Rule> rules;
     private ConventionAnnotation annotation;
     private ConventionScope conventionScope;
-
-
     private boolean allRulesMustApply;
     // Getters and setters
     public String getName() {

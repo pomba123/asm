@@ -10,26 +10,18 @@ import java.io.IOException;
 import java.util.List;
 
 public class MethodReturnTypeConventionVerifier implements ConventionVerifier{
-    private Class<?> returnType;
+    private String returnType;
 
 
     @Override
     public void init(Rule rule) {
         List<Parameter> parameters = rule.getParameters();
-        try {
-            returnType = ObjectUtils.resolveClass(parameters.get(0).getType());
-
-
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        ;
-
+        returnType = parameters.get(0).getType();
     }
 
     @Override
     public boolean verifyConvention(ASMElement element) throws IOException {
         Method method = (Method) element;
-        return returnType==method.getReturnType();
+        return returnType.equals(method.getReturnType());
     }
 }

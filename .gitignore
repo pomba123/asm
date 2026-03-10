@@ -2,3 +2,5 @@ target/
 
 src/main/target
 src/tests/target
+target/
+.idea/

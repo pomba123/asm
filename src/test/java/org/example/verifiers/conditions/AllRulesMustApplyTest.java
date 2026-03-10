@@ -92,7 +92,6 @@ public class AllRulesMustApplyTest {
                             .newInstance();
             verifier.init(rule);
             if (!verifier.verifyConvention(method) && allRulesMustApply) {
-                System.out.println(rule.getImplementation());
                 result=false;
             }
         }

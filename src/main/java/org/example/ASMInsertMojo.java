@@ -1,63 +1,42 @@
 package org.example;
 
-import org.apache.maven.artifact.Artifact;
-import org.apache.maven.project.MavenProject;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
 
 import java.io.File;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.nio.file.Path;
 
-@Mojo(name = "instrument", defaultPhase = LifecyclePhase.PROCESS_CLASSES)
+/**
+ * Maven plugin Mojo to run ASM transformations after classes are compiled.
+ */
+@Mojo(name = "insert", defaultPhase = LifecyclePhase.PROCESS_CLASSES)
 public class ASMInsertMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
     private MavenProject project;
 
-    @Parameter(defaultValue = "${project.basedir}", readonly = true)
-    private File projectDir;
-
     @Parameter(defaultValue = "${project.build.outputDirectory}", readonly = true)
     private File classesDir;
+
+    @Parameter(defaultValue = "${project.basedir}", readonly = true)
+    private File projectDir;
 
     @Override
     public void execute() throws MojoExecutionException {
         getLog().info("Running ASM transformer...");
 
         try {
-            List<URL> urls = new ArrayList<>();
+            Path projectPath = projectDir.toPath();
+            Path classesPath = classesDir.toPath();
 
-            urls.add(classesDir.toURI().toURL());
+            getLog().info("Classes output directory: " + classesPath);
 
-
-            Set<Artifact> artifacts = project.getArtifacts();
-            for (Artifact artifact : artifacts) {
-                if (artifact.getFile() != null) {
-                    urls.add(artifact.getFile().toURI().toURL());
-                }
-            }
-
-            URLClassLoader userClassLoader = new URLClassLoader(
-                    urls.toArray(new URL[0]),
-                    Thread.currentThread().getContextClassLoader()
-            );
-
-            getLog().info("User classloader built with " + urls.size() + " entries");
-            getLog().info("Classes output directory: " + classesDir.getAbsolutePath());
-
-            // Call your ASM entrypoint
-            ASMInsertExample.run(
-                    projectDir.toPath(),
-                    classesDir.toPath(),
-                    userClassLoader
-            );
+            // Call ASM transformer
+            ASMInsertExample.run(projectPath, classesPath);
 
         } catch (Exception e) {
             throw new MojoExecutionException("ASM transformation failed", e);

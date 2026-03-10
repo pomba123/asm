@@ -54,7 +54,7 @@ public class ConventionClassVisitorTest {
             public AnnotationVisitor visitAnnotation(
                     String descriptor,
                     boolean visible) {
-                System.out.println(descriptor);
+
                 if (descriptor.equals(expectedDescriptor)) {
                     found.set(true);
                 }

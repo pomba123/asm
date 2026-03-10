@@ -1,36 +1,36 @@
 package org.example.model;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
 import org.objectweb.asm.Type;
 import java.lang.Class;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class Method  extends ASMElement{
     private String[] parameters;
     private String name;
-    private Class<?>[] exceptions;
-    private Class<?> returnType;
+    private List<String> exceptions;
+    private String returnType;
     private org.example.model.Class declaringClass;
     public Method(String name, String descriptor,String[] exceptions,org.example.model.Class declaringClass)  {
+
         Type returnType = Type.getReturnType(descriptor);
+
         Type[] parametersTypes = Type.getArgumentTypes(descriptor);
+
         this.name = name;
-        this.returnType = getClassFor(returnType);
+        this.returnType = returnType.getClassName();
+
         this.parameters = new String[parametersTypes.length];
         if(exceptions!=null){
-            this.exceptions = new Class<?>[exceptions.length];
-            for(int i=0;i<exceptions.length;i++){
-                exceptions[i] = exceptions[i].replace("/",".");
-                try {
-                    this.exceptions[i] = Class.forName("java.io.IOException");
-                } catch (ClassNotFoundException e) {
-                    throw new RuntimeException(e);
-                }
-            }
+            this.exceptions = new ArrayList<String>();
+            this.exceptions.addAll(Arrays.asList(exceptions));
         }
 
         Type[] argTypes = Type.getArgumentTypes(descriptor);
         for(int i=0;i<argTypes.length;i++){
-
+            System.out.println(argTypes[i]);
             this.parameters[i] = argTypes[i].getClassName();
 
         }
@@ -38,7 +38,6 @@ public class Method  extends ASMElement{
 
 
         this.declaringClass = declaringClass;
-
 
     }
 
@@ -71,19 +70,19 @@ public class Method  extends ASMElement{
         this.name = name;
     }
 
-    public Class<?>[] getExceptions() {
+    public List<String> getExceptions() {
         return exceptions;
     }
 
-    public void setExceptions(Class<?>[] exceptions) {
+    public void setExceptions(List<String> exceptions) {
         this.exceptions = exceptions;
     }
 
-    public Class<?> getReturnType() {
+    public String getReturnType() {
         return returnType;
     }
 
-    public void setReturnType(Class<?> returnType) {
+    public void setReturnType(String returnType) {
         this.returnType = returnType;
     }
 

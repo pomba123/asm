@@ -69,6 +69,7 @@ public class ConventionMethodVisitor extends MethodVisitor {
     }
 
     private boolean verifyConvention() {
+        System.out.println(methodName);
         try {
             Method method = new Method(
                     methodName,
@@ -77,6 +78,7 @@ public class ConventionMethodVisitor extends MethodVisitor {
                     declaringClass
             );
             boolean allRulesMustApply = convention.isAllRulesMustApply();
+
             for (Rule rule : convention.getRules()) {
                 ConventionVerifier verifier =
                         (ConventionVerifier) java.lang.Class
