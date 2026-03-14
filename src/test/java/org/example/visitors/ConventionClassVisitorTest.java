@@ -22,7 +22,7 @@ public class ConventionClassVisitorTest {
 
       InputStream in = ClassWithConventions.class .getClassLoader()
               .getResourceAsStream(
-                      "classes\\ClassWithConventions.class");
+                      "classes/ClassWithConventions.class");
 
       ClassReader reader = new ClassReader(in);
       ClassWriter writer =
