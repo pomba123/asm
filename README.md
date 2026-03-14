@@ -1,5 +1,10 @@
 # Annotation Adder
 
+<p align="center">
+    <a href="https://github.com/pomba123/asm/actions/workflows/build.yml" alt="Build">
+        <img src="https://github.com/pomba123/asm/actions/workflows/build.yml/badge.svg" /></a>
+</p>
+
 Annotation Adder is a tool that reads compiled bytecode and adds annotations based on defined conventions for annotations.
 
 ## How to install
