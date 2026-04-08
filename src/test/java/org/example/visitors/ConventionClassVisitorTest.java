@@ -7,6 +7,7 @@ import org.example.utils.ConventionLoader;
 import org.junit.jupiter.api.Test;
 import org.objectweb.asm.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
@@ -16,13 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.objectweb.asm.Opcodes.ASM9;
 
 public class ConventionClassVisitorTest {
-   private String path = "src/test/java/jsonFiles/classConventions.json";
+   private String path = "src/test/java/jsonFiles/classConventions.json".replace("/",File.separator);
   @Test
   void MustHaveAnnotationWithParametersOnClass() throws Exception {
 
       InputStream in = ClassWithConventions.class .getClassLoader()
               .getResourceAsStream(
-                      "classes/ClassWithConventions.class");
+                      "classes/ClassWithConventions.class".replace("/", File.separator));
 
       ClassReader reader = new ClassReader(in);
       ClassWriter writer =
